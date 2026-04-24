@@ -26,7 +26,7 @@ export function ResumeEditor({ resumeHook }: { resumeHook: ReturnType<typeof use
   return (
     <div className="space-y-8 pb-20">
       {/* Personal Info */}
-      <Card border-none shadow-none bg-transparent>
+      <Card className="border-none shadow-none bg-transparent">
         <CardHeader className="px-0">
           <CardTitle className="text-2xl font-semibold tracking-tight">Personal Information</CardTitle>
         </CardHeader>
@@ -256,7 +256,7 @@ export function ResumeEditor({ resumeHook }: { resumeHook: ReturnType<typeof use
       </div>
 
       {/* Skills */}
-      <Card border-none shadow-none bg-transparent>
+      <Card className="border-none shadow-none bg-transparent">
         <CardHeader className="px-0">
           <CardTitle className="text-2xl font-semibold tracking-tight">Skills</CardTitle>
         </CardHeader>
@@ -266,7 +266,7 @@ export function ResumeEditor({ resumeHook }: { resumeHook: ReturnType<typeof use
             <Input
               id="skills"
               value={resumeData.skills.join(", ")}
-              onChange={(e) => updateSkills(e.target.value.split(",").map(s => s.trim()))}
+              onChange={(e) => updateSkills(e.target.value.split(",").map((s) => s.trim()))}
               placeholder="React, TypeScript, Node.js, Project Management..."
             />
           </div>

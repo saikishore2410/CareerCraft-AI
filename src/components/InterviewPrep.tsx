@@ -28,8 +28,8 @@ export function InterviewPrep({ resumeData }: { resumeData: ResumeData }) {
     setInterviewStarted(true);
     try {
       const initialPrompt = "Hello! I'm ready for the mock interview. Please start by introducing yourself and asking the first question.";
-      const response = await startMockInterview(resumeData, jobDescription, [{ role: 'user', content: initialPrompt }]);
-      setMessages([{ role: 'assistant', content: response, timestamp: Date.now() }]);
+      const response = await startMockInterview(resumeData, jobDescription, [{ role: "user", content: initialPrompt }]);
+      setMessages([{ role: "assistant", content: response, timestamp: Date.now() }]);
     } catch (error) {
       console.error("Failed to start interview:", error);
     } finally {
@@ -41,18 +41,18 @@ export function InterviewPrep({ resumeData }: { resumeData: ResumeData }) {
     if (!input.trim() || loading) return;
 
     const userMessage: InterviewMessage = {
-      role: 'user',
+      role: "user",
       content: input,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
 
     try {
       const response = await startMockInterview(resumeData, jobDescription, [...messages, userMessage]);
-      setMessages(prev => [...prev, { role: 'assistant', content: response, timestamp: Date.now() }]);
+      setMessages((prev) => [...prev, { role: "assistant", content: response, timestamp: Date.now() }]);
     } catch (error) {
       console.error("Failed to get response:", error);
     } finally {
@@ -82,19 +82,19 @@ export function InterviewPrep({ resumeData }: { resumeData: ResumeData }) {
               onChange={(e) => setJobDescription(e.target.value)}
             />
           </div>
-          <Button 
-            className="w-full" 
-            onClick={handleStartInterview} 
+          <Button
+            className="w-full"
+            onClick={handleStartInterview}
             disabled={loading || !jobDescription}
           >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Preparing Interview...
-              </>
-            ) : (
-              "Start Mock Interview"
-            )}
+            {loading
+              ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Preparing Interview...
+                </>
+              )
+              : "Start Mock Interview"}
           </Button>
         </CardContent>
       </Card>
@@ -118,27 +118,29 @@ export function InterviewPrep({ resumeData }: { resumeData: ResumeData }) {
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
                 className={`max-w-[80%] p-3 rounded-2xl ${
-                  msg.role === 'user'
-                    ? 'bg-blue-600 text-white rounded-tr-none'
-                    : 'bg-slate-100 text-slate-800 rounded-tl-none'
+                  msg.role === "user"
+                    ? "bg-blue-600 text-white rounded-tr-none"
+                    : "bg-slate-100 text-slate-800 rounded-tl-none"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1 opacity-70 text-[10px] uppercase font-bold tracking-wider">
-                  {msg.role === 'user' ? (
-                    <>
-                      <span>You</span>
-                      <User className="w-3 h-3" />
-                    </>
-                  ) : (
-                    <>
-                      <Bot className="w-3 h-3" />
-                      <span>AI Interviewer</span>
-                    </>
-                  )}
+                  {msg.role === "user"
+                    ? (
+                      <>
+                        <span>You</span>
+                        <User className="w-3 h-3" />
+                      </>
+                    )
+                    : (
+                      <>
+                        <Bot className="w-3 h-3" />
+                        <span>AI Interviewer</span>
+                      </>
+                    )}
                 </div>
                 <div className="prose prose-sm prose-slate max-w-none dark:prose-invert">
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -165,15 +167,15 @@ export function InterviewPrep({ resumeData }: { resumeData: ResumeData }) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
+              if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 handleSendMessage();
               }
             }}
             className="min-h-[80px] resize-none"
           />
-          <Button 
-            className="self-end h-10 w-10 p-0" 
+          <Button
+            className="self-end h-10 w-10 p-0"
             onClick={handleSendMessage}
             disabled={loading || !input.trim()}
           >

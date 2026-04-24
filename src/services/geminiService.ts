@@ -3,7 +3,10 @@ import { ResumeData } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-export const optimizeResume = async (resume: ResumeData, jobDescription: string) => {
+export const optimizeResume = async (
+  resume: ResumeData,
+  jobDescription: string,
+) => {
   const prompt = `
     You are an expert career coach and resume optimizer.
     Analyze the following resume data and optimize it for the provided job description.
@@ -28,27 +31,35 @@ export const optimizeResume = async (resume: ResumeData, jobDescription: string)
         properties: {
           improvements: {
             type: Type.ARRAY,
-            items: { type: Type.STRING }
+            items: { type: Type.STRING },
           },
           missingKeywords: {
             type: Type.ARRAY,
-            items: { type: Type.STRING }
+            items: { type: Type.STRING },
           },
           matchScore: { type: Type.NUMBER },
           highlightSkills: {
             type: Type.ARRAY,
-            items: { type: Type.STRING }
-          }
+            items: { type: Type.STRING },
+          },
         },
-        required: ["improvements", "missingKeywords", "matchScore", "highlightSkills"]
-      }
-    }
+        required: [
+          "improvements",
+          "missingKeywords",
+          "matchScore",
+          "highlightSkills",
+        ],
+      },
+    },
   });
 
   return JSON.parse(response.text);
 };
 
-export const generateInterviewQuestions = async (resume: ResumeData, jobDescription: string) => {
+export const generateInterviewQuestions = async (
+  resume: ResumeData,
+  jobDescription: string,
+) => {
   const prompt = `
     Based on the following resume and job description, generate 5 challenging interview questions.
     For each question, explain why it's being asked and what a "good" answer should include.
@@ -69,18 +80,22 @@ export const generateInterviewQuestions = async (resume: ResumeData, jobDescript
           properties: {
             question: { type: Type.STRING },
             reason: { type: Type.STRING },
-            idealAnswer: { type: Type.STRING }
+            idealAnswer: { type: Type.STRING },
           },
-          required: ["question", "reason", "idealAnswer"]
-        }
-      }
-    }
+          required: ["question", "reason", "idealAnswer"],
+        },
+      },
+    },
   });
 
   return JSON.parse(response.text);
 };
 
-export const startMockInterview = async (resume: ResumeData, jobDescription: string, history: { role: string, content: string }[]) => {
+export const startMockInterview = async (
+  resume: ResumeData,
+  jobDescription: string,
+  history: { role: string; content: string }[],
+) => {
   const systemInstruction = `
     You are an expert interviewer for a position matching the provided job description.
     You have the candidate's resume.
@@ -94,10 +109,10 @@ export const startMockInterview = async (resume: ResumeData, jobDescription: str
 
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: history.map(h => h.content).join("\n"), // Simplified for now, better to use chat history format
+    contents: history.map((h) => h.content).join("\n"), // Simplified for now, better to use chat history format
     config: {
-      systemInstruction
-    }
+      systemInstruction,
+    },
   });
 
   return response.text;
